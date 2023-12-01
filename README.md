@@ -2,7 +2,7 @@
 BN Tracking Proxy package
 
 ## Prerequisite
-@gotamedia/tracking is a layer package around GTM (Google Tag Manager) and requires some configurations in GTM in order to work as expected
+Tracking package is a layer around GTM (Google Tag Manager) and requires some configurations in GTM in order to work as expected
 
 ### GTM requirements
 You need to create a new template in your GTM along with a Tag with a Trigger
