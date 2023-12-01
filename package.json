@@ -1,0 +1,46 @@
+{
+  "name": "@gotamedia/tracking",
+  "version": "0.0.1",
+  "description": "BN Tracking Proxy package",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "files": [
+    "dist",
+    "./CHANGELOG.md",
+    "./src/GTM_Template.tpl"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "build:local": "npm run build && yalc push",
+    "package:details": "npm pack --dry-run",
+    "package:publish": "npm publish --access public"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "@gotamedia/fluffy": ">=0.30.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
+    "@gotamedia/fluffy": "^0.39.8",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/uuid": "^9.0.7",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "rollup": "^3.29.4",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.36.0"
+  },
+  "dependencies": {
+    "react-device-detect": "^2.2.3",
+    "uuid": "^9.0.1"
+  }
+}
