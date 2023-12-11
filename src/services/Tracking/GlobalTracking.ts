@@ -8,6 +8,8 @@ import type * as Types from './types'
 class GlobalTracking {
     initiated: boolean
 
+    closing: boolean
+
     props: Types.TrackingProps
 
     _lastEventTime?: Date
@@ -18,6 +20,7 @@ class GlobalTracking {
 
     constructor() {
         this.initiated = false
+        this.closing = false
         this.props = {} as Types.TrackingProps
     }
 
@@ -70,8 +73,12 @@ class GlobalTracking {
         if (!this.initiated) {
             this.initiated = true
 
+            window.addEventListener("beforeunload", () => {
+                this.closing = true
+            })
+
             window.document.addEventListener('visibilitychange', () => {
-                if (document.visibilityState === 'hidden') {
+                if (!this.closing && document.visibilityState === 'hidden') {
                     const activeUsageEvent = this.getLastPageViewActiveUsageEvent()
 
                     if (activeUsageEvent) {
