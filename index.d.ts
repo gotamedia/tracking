@@ -1,4 +1,4 @@
-import type { TrackingUtils } from './types'
+import type { TrackingUtils } from './src/types'
 
 declare global {
     interface Window {
