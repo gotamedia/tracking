@@ -2,7 +2,7 @@
 import { v4 as createUUID } from 'uuid'
 import * as DeviceDetect from 'react-device-detect'
 
-import { getClientCookieValue } from './helpers'
+import { getCookieValue } from './helpers'
 
 import getTrackingUserId from './getTrackingUserId'
 
@@ -67,7 +67,7 @@ const getBaseTrackingEventPayload = (name: Constants.TrackingEventNames, props: 
                 version: system.version
             }
         },
-        session_id: getClientCookieValue(cookies.sesstionId)!,
+        session_id: getCookieValue(cookies.sesstionId)!,
         location: window.location.toString(),
         referrer: window.document.referrer || null,
         user: {
@@ -77,7 +77,7 @@ const getBaseTrackingEventPayload = (name: Constants.TrackingEventNames, props: 
             } : undefined,
             is_logged_in: isLoggedIn,
             is_subscriber: isSubscriber,
-            client_id: getClientCookieValue(cookies.clientId)!
+            client_id: getCookieValue(cookies.clientId)!
         }
     }
 }

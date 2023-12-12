@@ -1,11 +1,11 @@
-import { getClientCookieValue } from './helpers'
+import { getCookieValue } from './helpers'
 
 import type { Cookies } from '../services/Tracking/types'
 
 const getTrackingUserId = (cookies: Cookies, userId?: string) => {
     return (
         userId ||
-        getClientCookieValue(cookies.clientId)!
+        getCookieValue(cookies.clientId)!
     )
 }
 
