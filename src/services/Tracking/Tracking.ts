@@ -3,7 +3,10 @@ import DateUtility from '@gotamedia/fluffy/date'
 
 import GTM from '../../services/GTM'
 
-import { getClientCookieValue } from '../../utils/helpers'
+import {
+    getCookieValue,
+    setCookieValue
+} from '../../utils/helpers'
 import getTrackingEventPayload from '../../utils/getTrackingEventPayload'
 import getTrackingUserId from '../../utils/getTrackingUserId'
 
@@ -25,16 +28,26 @@ class Tracking {
     }
 
     private buildBaseEvents() {
-        const sessionId = getClientCookieValue(this.props.cookies.sesstionId)
+        const sessionId = getCookieValue(this.props.cookies.sesstionId)
         const hasBeen30MinSinceLastEvent = DateUtility.isAfter(new Date(), DateUtility.addMinutes(GlobalTracking.lastEventTime!, 30))
 
         if (!sessionId || hasBeen30MinSinceLastEvent) {
-            document.cookie = `${this.props.cookies.sesstionId}=${createUUID()};path=/`
 
-            const clientId = getClientCookieValue(this.props.cookies.clientId)
+            setCookieValue({
+                name: this.props.cookies.sesstionId,
+                value: createUUID(),
+                secure: this.props.isProduction
+            })
+
+            const clientId = getCookieValue(this.props.cookies.clientId)
 
             if (!clientId) {
-                document.cookie = `${this.props.cookies.clientId}=${createUUID()};path=/`
+                setCookieValue({
+                    name: this.props.cookies.clientId,
+                    value: createUUID(),
+                    secure: this.props.isProduction,
+                    days: 365
+                })
 
                 this.trackingEvents.push(getTrackingEventPayload(Constants.TrackingEventNames.FirstVisit, this.props))
             }
@@ -80,10 +93,10 @@ class Tracking {
             this.trackingEvents = this.trackingEvents.map((eventItem) => {
                 const updatedEventItem = {
                     ...eventItem,
-                    session_id: getClientCookieValue(this.props.cookies.sesstionId)!,
+                    session_id: getCookieValue(this.props.cookies.sesstionId)!,
                     user: {
                         ...eventItem.user,
-                        client_id: getClientCookieValue(this.props.cookies.clientId)!
+                        client_id: getCookieValue(this.props.cookies.clientId)!
                     }
                 }
 
