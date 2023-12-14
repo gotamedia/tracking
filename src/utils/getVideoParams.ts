@@ -1,14 +1,18 @@
+import { TrackingEventContentTypes } from '../'
 import type * as Types from '../services/Tracking/types'
 
 const getVideoParams = (props: Types.VideoTrackingProps) => {
     const {
-        id,
-        title,
-        playTime,
-        system,
-        currentTime,
-        timePast
-    } = props.video
+        video: {
+            id,
+            title,
+            playTime,
+            system,
+            currentTime,
+            timePast
+        },
+        content
+    } = props
 
     const paramsToAppend: Types.ParamsToAppend = []
 
@@ -31,6 +35,8 @@ const getVideoParams = (props: Types.VideoTrackingProps) => {
     paramsToAppend.push({
         name: 'content',
         value: {
+            type: content.type || TrackingEventContentTypes.NewsFeed,
+            title: content.title || window.document.title,
             media: {
                 media_type: 'video',
                 content_type: 'content',

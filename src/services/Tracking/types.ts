@@ -122,8 +122,8 @@ export type BaseTrackingData = {
     device: {
         category: string,
         os: {
-            name: string,
-            version: string
+            name: string | null,
+            version: string | null
         },
         screen: {
             width: number,
