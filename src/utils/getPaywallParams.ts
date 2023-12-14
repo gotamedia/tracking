@@ -8,7 +8,7 @@ const getPaywallParams = (props: Types.PaywallLoadedTrackingProps) => {
 
     const paramsToAppend: Types.ParamsToAppend = []
 
-    const ecommercePayload: any = {}
+    const ecommercePayload: any = { currency: 'sek' }
 
     if (campaign) {
         ecommercePayload.campaign = campaign
