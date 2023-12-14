@@ -44,10 +44,19 @@ const getTrackingEventPayload = (name: Constants.TrackingEventNames, props: Type
     }
 
     paramsToAppend.forEach((item) => {
-        // @ts-ignore
-        eventPayload[item.name] = item.value
+        if (item.value && typeof item.value === 'object') {
+            // @ts-ignore
+            eventPayload[item.name] = {
+                // @ts-ignore
+                ...eventPayload[item.name],
+                ...item.value
+            }
+        } else {
+            // @ts-ignore
+            eventPayload[item.name] = item.value
+        }
     })
-
+    
     return JSON.parse(JSON.stringify(eventPayload))
 }
 

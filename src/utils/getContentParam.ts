@@ -28,11 +28,9 @@ const getContentParam = (name: Constants.TrackingEventNames, props: Types.PageVi
         }
 
         case Constants.TrackingEventNames.Video: {
-            const _content = content as Types.VideoTrackingProps['content']
-
             return {
-                type: _content.type,
-                title: _content.title
+                type: content.type,
+                title: content.title
             }
         }
 

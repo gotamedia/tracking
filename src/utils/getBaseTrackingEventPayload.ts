@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { v4 as createUUID } from 'uuid'
-import * as DeviceDetect from 'react-device-detect'
+import { UAParser } from 'ua-parser-js'
 
 import { getCookieValue } from './helpers'
 
@@ -18,6 +18,8 @@ const getBaseTrackingEventPayload = (name: Constants.TrackingEventNames, props: 
         isSubscriber,
         system
     } = props
+
+    const parsedUA = new UAParser(window.navigator.userAgent).getResult()
 
     return {
         protocol_version: 1,
@@ -42,22 +44,22 @@ const getBaseTrackingEventPayload = (name: Constants.TrackingEventNames, props: 
             }
         },
         device: {
-            category: DeviceDetect.isMobileOnly ? (
+            category: parsedUA.device.model === 'mobile' ? (
                 'mobile'
             ) : (
-                DeviceDetect.isTablet ? (
+                parsedUA.device.model === 'tablet' ? (
                     'tablet'
                 ) : (
                     'desktop'
                 )
             ),
             os: {
-                name: DeviceDetect.osName,
-                version: DeviceDetect.osVersion
+                name: parsedUA.os.name || null,
+                version: parsedUA.os.version || null
             },
             screen: {
-                width: window.innerWidth,
-                height: window.innerHeight
+                width: parseInt(`${window.innerWidth}`),
+                height: parseInt(`${window.innerHeight}`)
             }
         },
         environment: {
