@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/gotamedia/tracking/compare/v1.0.3...v2.0.0) (2024-01-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* Fixed better handling for client/session ids and bump major due to a typo in `TrackingProps.Cookies`
+
+### Features
+
+* Fixed better handling for client/session ids and bump major due to a typo in `TrackingProps.Cookies` ([3227e0f](https://github.com/gotamedia/tracking/commit/3227e0f1b62fedbc1d3066223f939811bd95ba46))
+
 ## [1.0.3](https://github.com/gotamedia/tracking/compare/v1.0.2...v1.0.3) (2023-12-14)
 
 
