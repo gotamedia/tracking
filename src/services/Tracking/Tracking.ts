@@ -8,7 +8,6 @@ import {
     setCookieValue
 } from '../../utils/helpers'
 import getTrackingEventPayload from '../../utils/getTrackingEventPayload'
-import getTrackingUserId from '../../utils/getTrackingUserId'
 
 import GlobalTracking from './GlobalTracking'
 
@@ -81,7 +80,7 @@ class Tracking {
             ...event,
             // Reassign `session_id` & `client_id` to make sure all events has the latest values.
             trackingData: event.trackingData.map((eventItem) => {
-                const updatedEventItem = {
+                return {
                     ...eventItem,
                     session_id: sessionId,
                     user: {
@@ -89,15 +88,6 @@ class Tracking {
                         client_id: clientId
                     }
                 }
-    
-                if (eventItem.user.id) {
-                    updatedEventItem.user.id = {
-                        ...updatedEventItem.user.id!,
-                        value: getTrackingUserId(this.props.cookies, this.props.userId)
-                    }
-                }
-    
-                return updatedEventItem
             })
         }
 

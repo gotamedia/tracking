@@ -4,8 +4,6 @@ import { UAParser } from 'ua-parser-js'
 
 import { getCookieValue } from './helpers'
 
-import getTrackingUserId from './getTrackingUserId'
-
 import type * as Constants from '../services/Tracking/constants'
 import type * as Types from '../services/Tracking/types'
 
