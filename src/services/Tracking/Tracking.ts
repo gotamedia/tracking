@@ -27,31 +27,38 @@ class Tracking {
         this.push()
     }
 
-    private buildBaseEvents() {
-        const sessionId = getCookieValue(this.props.cookies.sesstionId)
-        const hasBeen30MinSinceLastEvent = DateUtility.isAfter(new Date(), DateUtility.addMinutes(GlobalTracking.lastEventTime!, 30))
+    private handleClientAndSessionIds () {
+        const clientId = getCookieValue(this.props.cookies.clientId)
+        const sessionId = getCookieValue(this.props.cookies.sessionId)
 
-        if (!sessionId || hasBeen30MinSinceLastEvent) {
-
+        if (!clientId) {
             setCookieValue({
-                name: this.props.cookies.sesstionId,
+                name: this.props.cookies.clientId,
+                value: createUUID(),
+                secure: this.props.isProduction,
+                days: 365
+            })
+        }
+
+        if (!sessionId) {
+            setCookieValue({
+                name: this.props.cookies.sessionId,
                 value: createUUID(),
                 secure: this.props.isProduction
             })
+        }
+    }
 
-            const clientId = getCookieValue(this.props.cookies.clientId)
+    private buildBaseEvents() {
+        const clientId = getCookieValue(this.props.cookies.clientId)
+        const sessionId = getCookieValue(this.props.cookies.sessionId)
+        const hasBeen30MinSinceLastEvent = DateUtility.isAfter(new Date(), DateUtility.addMinutes(GlobalTracking.lastEventTime!, 30))
 
-            if (!clientId) {
-                setCookieValue({
-                    name: this.props.cookies.clientId,
-                    value: createUUID(),
-                    secure: this.props.isProduction,
-                    days: 365
-                })
+        if (!clientId) {
+            this.trackingEvents.push(getTrackingEventPayload(Constants.TrackingEventNames.FirstVisit, this.props))
+        }
 
-                this.trackingEvents.push(getTrackingEventPayload(Constants.TrackingEventNames.FirstVisit, this.props))
-            }
-
+        if (!sessionId || hasBeen30MinSinceLastEvent) {
             this.trackingEvents.push(getTrackingEventPayload(Constants.TrackingEventNames.SessionStart, this.props))
         }
 
@@ -65,10 +72,39 @@ class Tracking {
     }
 
     private _pushHandler(event: Types.EventObject) {
+        this.handleClientAndSessionIds()
+
+        const clientId = getCookieValue(this.props.cookies.clientId)!
+        const sessionId = getCookieValue(this.props.cookies.sessionId)!
+
+        const eventPayload: Types.EventObject = {
+            ...event,
+            // Reassign `session_id` & `client_id` to make sure all events has the latest values.
+            trackingData: event.trackingData.map((eventItem) => {
+                const updatedEventItem = {
+                    ...eventItem,
+                    session_id: sessionId,
+                    user: {
+                        ...eventItem.user,
+                        client_id: clientId
+                    }
+                }
+    
+                if (eventItem.user.id) {
+                    updatedEventItem.user.id = {
+                        ...updatedEventItem.user.id!,
+                        value: getTrackingUserId(this.props.cookies, this.props.userId)
+                    }
+                }
+    
+                return updatedEventItem
+            })
+        }
+
         if (typeof this.props.pushHandler === 'function') {
-            this.props.pushHandler(event)
+            this.props.pushHandler(eventPayload)
         } else {
-            GTM.push(event)
+            GTM.push(eventPayload)
         }
     }
 
@@ -88,27 +124,6 @@ class Tracking {
             }
 
             this.trackingEvents.push(event)
-
-            // Reassign `session_id` & `client_id` to make sure all events has the latest values.
-            this.trackingEvents = this.trackingEvents.map((eventItem) => {
-                const updatedEventItem = {
-                    ...eventItem,
-                    session_id: getCookieValue(this.props.cookies.sesstionId)!,
-                    user: {
-                        ...eventItem.user,
-                        client_id: getCookieValue(this.props.cookies.clientId)!
-                    }
-                }
-
-                if (eventItem.user.id) {
-                    updatedEventItem.user.id = {
-                        ...updatedEventItem.user.id!,
-                        value: getTrackingUserId(this.props.cookies, this.props.userId)
-                    }
-                }
-
-                return updatedEventItem
-            })
 
             GlobalTracking.lastEventTime = new Date()
 

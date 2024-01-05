@@ -69,14 +69,14 @@ const getBaseTrackingEventPayload = (name: Constants.TrackingEventNames, props: 
                 version: system.version
             }
         },
-        session_id: getCookieValue(cookies.sesstionId)!,
+        session_id: getCookieValue(cookies.sessionId)!,
         location: window.location.toString(),
         referrer: window.document.referrer || null,
         user: {
-            id: system.auth ? {
-                value: getTrackingUserId(cookies, userId),
+            id: system.auth && userId && isLoggedIn ? {
+                value: userId,
                 system: system.auth.name
-            } : undefined,
+            } : null,
             is_logged_in: isLoggedIn,
             is_subscriber: isSubscriber,
             client_id: getCookieValue(cookies.clientId)!

@@ -16,7 +16,7 @@ const getContentParam = (name: Constants.TrackingEventNames, props: Types.PageVi
                     system: _content.system.name
                 },
                 type: _content.type,
-                title: _content.title,
+                title: _content.title || window.document.title,
                 content_access_status: _content.isLocked ? (
                     'locked'
                 ) : (
@@ -30,7 +30,7 @@ const getContentParam = (name: Constants.TrackingEventNames, props: Types.PageVi
         case Constants.TrackingEventNames.Video: {
             return {
                 type: content.type,
-                title: content.title
+                title: content.title || window.document.title
             }
         }
 

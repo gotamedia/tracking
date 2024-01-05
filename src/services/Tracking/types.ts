@@ -141,10 +141,10 @@ export type BaseTrackingData = {
     location: string,
     referrer: string | null,
     user: {
-        id?: {
+        id: {
             value: string,
             system: string
-        },
+        } | null,
         client_id: string
         is_logged_in: boolean | null,
         is_subscriber: boolean | null
@@ -180,5 +180,5 @@ export type TrackingEvent = {
 
 export type Cookies = {
     clientId: string,
-    sesstionId: string
+    sessionId: string
 }
