@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/gotamedia/tracking/compare/v2.0.0...v2.0.1) (2024-01-18)
+
+
+### Bug Fixes
+
+* Fixed `event_params` payload for Active Usage events. ([6c5726e](https://github.com/gotamedia/tracking/commit/6c5726ef9797f172b57d19002a6386f1a5e9a7ba))
+
 ## [2.0.0](https://github.com/gotamedia/tracking/compare/v1.0.3...v2.0.0) (2024-01-05)
 
 
