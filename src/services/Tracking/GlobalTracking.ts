@@ -1,6 +1,7 @@
 import GTM from '../../services/GTM'
 
 import getBaseTrackingEventPayload from '../../utils/getBaseTrackingEventPayload'
+import getActiveUsageParams from '../../utils/getActiveUsageParams'
 
 import * as Constants from './constants'
 import type * as Types from './types'
@@ -58,9 +59,17 @@ class GlobalTracking {
 
     public getLastPageViewActiveUsageEvent() {
         if (this._lastPageViewEvent) {
-            return {
+            const event = {
                 ...this._lastPageViewEvent,
                 ...getBaseTrackingEventPayload(Constants.TrackingEventNames.ActiveUsage, this.props)
+            }
+
+            return {
+                ...event,
+                event_params: [
+                    ...(event.event_params || []),
+                    getActiveUsageParams()
+                ]
             }
         }
 
