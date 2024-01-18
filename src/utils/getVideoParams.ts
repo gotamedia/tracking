@@ -1,4 +1,4 @@
-import { TrackingEventContentTypes } from '../'
+import { TrackingEventContentTypes } from '../services/Tracking/constants'
 import type * as Types from '../services/Tracking/types'
 
 const getVideoParams = (props: Types.VideoTrackingProps) => {

@@ -13,7 +13,10 @@ const getTrackingEventPayload = (name: Constants.TrackingEventNames, props: Type
 
     switch (name) {
         case Constants.TrackingEventNames.ActiveUsage:
-            paramsToAppend.push(...getActiveUsageParams())
+            paramsToAppend.push({
+                name: 'event_params',
+                value: [getActiveUsageParams()]
+            })
             break
 
         case Constants.TrackingEventNames.Video:
